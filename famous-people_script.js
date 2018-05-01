@@ -10,6 +10,13 @@ const client = new pg.Client({
   ssl        : settings.ssl
 });
 
+const printResult = result => {
+    for (let element of result) {
+      console.log(`- ${element.id} : ${element.first_name} ${element.last_name}, born '${element.birthdate.toISOString().slice(0, 10)}'`);
+    }
+  };
+
+
 client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
@@ -18,10 +25,7 @@ client.connect((err) => {
     if (err) {
       return console.error("error running query", err);
     }
-    for (let element of result.rows) {
-      console.log(`- ${element.id} : ${element.first_name} ${element.last_name}, born '${element.birthdate.toISOString().slice(0, 10)}'`);
-    }
-    //console.log("result", result.rows);
+    printResult(result.rows);
     client.end();
   });
 });
